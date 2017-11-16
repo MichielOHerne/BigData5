@@ -1,0 +1,11 @@
+Objective: 2-2 paragraphs describing what&why
+Data sources: what data do you need?/where would you find it
+Tools: given the data formats of your original dataset what would your data processing pipeline look like? Division of work: who does what
+
+Note: what tech would you use
+
+
+Software Applications are rapidly being developed to meet the demands of its end-users with new and performant features. This trend is particularly apparent in app stores for iOS or Android devices where apps are regularly being updated with improvements and performance fixes.
+
+The task of this project is to investigate to what degree we can run outdated versions of a Software Project today. You will be investigating software projects on Github where projects are versioned and old software releases are available. You will also develop a set of metrics and use sources such as TravisCI to find out indicators whether an old version of a project will be able to run. To this end, you will be able to answer something in these lines: “For a Github project A, there are 16 versions, 6 versions are likely to run today while the 10 other versions are not”
+

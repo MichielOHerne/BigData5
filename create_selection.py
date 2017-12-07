@@ -1,145 +1,138 @@
 import json
+from filters import all
 
-def Select_data(twitterdata, selection = [True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True], info = False):
+def Select_data(twitterdata, info = False, f_htg = all, f_txt = all, f_rtc = all, f_ctr = all, f_plc = all, f_cre = all, f_unam = all, f_usna = all, f_udes = all, f_ucre = all, f_ufrc = all, f_ufoc = all, f_uloc = all, f_ulan = all, f_utzn = all, f_uutc = all):
     new_data = []
     tmp_record = []
-    numofcolumns = 0
-    for i in selection:
-        if i:
-            numofcolumns = numofcolumns + 1
+
     # Top row with information about the columns
     if info:
-        if selection[0]:
-            tmp_record.append("Hashtag")
-        if selection[1]:
-            tmp_record.append("Text")
-        if selection[2]:
-            tmp_record.append("Retweet count")
-        if selection[3]:
-            tmp_record.append("Country")
-        if selection[4]:
-            tmp_record.append("Place")
-        if selection[5]:
-            tmp_record.append("Created at")
-        if selection[6]:
-            tmp_record.append("U: Name")
-        if selection[7]:
-            tmp_record.append("U: Screen name")
-        if selection[8]:
-            tmp_record.append("U: Description")
-        if selection[9]:
-            tmp_record.append("U: Created at")
-        if selection[10]:
-            tmp_record.append("U: Friends count")
-        if selection[11]:
-            tmp_record.append("U: Followers count")
-        if selection[12]:
-            tmp_record.append("U: Location")
-        if selection[13]:
-            tmp_record.append("U: Language")
-        if selection[14]:
-            tmp_record.append("U: Time zone")
-        if selection[15]:
-            tmp_record.append("U: UTC Offset")
-        return [tmp_record]
+        return ["Hashtag", "Text", "Retweet count", "Country", "Place", "Created at", "U: Name", "U: Screen name", "U: Description", "U: Created at", "U: Friends count", "U: Followers count", "U: Location", "U: Language", "U: Time zone", "U: UTC Offset"]
 
     # Data
     for individual_message in twitterdata:
         tmp_record = []
         tmpdict = json.loads(individual_message)
-        if selection[0]:
-            if (("entities" in tmpdict) and (len(tmpdict["entities"]["hashtags"]) > 0)) and (("text" in tmpdict["entities"]["hashtags"][0]) and isinstance(tmpdict["entities"]["hashtags"][0]["text"], str)):
-                tmp_record.append(tmpdict["entities"]["hashtags"][0]["text"].lower())
-            else:
-                tmp_record.append(None)
-        if selection[1]:
-            if ("text" in tmpdict):
-                tmp_record.append(tmpdict["text"])
-            else:
-                tmp_record.append(None)
-        if selection[2]:
-            if ("retweet_count" in tmpdict):
-                tmp_record.append(tmpdict["retweet_count"])
-            else:
-                tmp_record.append(None)
-        if selection[3]:
-            try:
-                tmp_record.append(tmpdict["place"]["country"])
-            except Exception:
-                tmp_record.append(None)
-        if selection[4]:
-            if (("place" in tmpdict) and (tmpdict["place"] != "null")):
-                tmp_record.append(tmpdict["place"])
-            else:
-                tmp_record.append(None)
-        if selection[5]:
-            if ("created_at" in tmpdict):
-                tmp_record.append(tmpdict["created_at"])
-            else:
-                tmp_record.append(None)
-        if ("user" in tmpdict):
-            if selection[6]:
-                if ("name" in tmpdict["user"]):
-                    tmp_record.append(tmpdict["user"]["name"])
-                else:
-                    tmp_record.append(None)
-            if selection[7]:
-                if ("screen_name" in tmpdict["user"]):
-                    tmp_record.append(tmpdict["user"]["screen_name"])
-                else:
-                    tmp_record.append(None)
-            if selection[8]:
-                if ("description" in tmpdict["user"]):
-                    tmp_record.append(tmpdict["user"]["description"])
-                else:
-                    tmp_record.append(None)
-            if selection[9]:
-                if ("created_at" in tmpdict["user"]):
-                    tmp_record.append(tmpdict["user"]["created_at"])
-                else:
-                    tmp_record.append(None)
-            if selection[10]:
-                if ("friends_count" in tmpdict["user"]):
-                    tmp_record.append(tmpdict["user"]["friends_count"])
-                else:
-                    tmp_record.append(None)
-            if selection[11]:
-                if ("followers_count" in tmpdict["user"]):
-                    tmp_record.append(tmpdict["user"]["followers_count"])
-                else:
-                    tmp_record.append(None)
-            if selection[12]:
-                if ("location" in tmpdict["user"]):
-                    tmp_record.append(tmpdict["user"]["location"])
-                else:
-                    tmp_record.append(None)
-            if selection[13]:
-                if ("lang" in tmpdict["user"]):
-                    tmp_record.append(tmpdict["user"]["lang"])
-                else:
-                    tmp_record.append(None)
-            if selection[14]:
-                if ("time_zone" in tmpdict["user"]):
-                    tmp_record.append(tmpdict["user"]["time_zone"])
-                else:
-                    tmp_record.append(None)
-            if selection[15]:
-                if ("utc_offset" in tmpdict["user"]):
-                    tmp_record.append(tmpdict["user"]["utc_offset"])
-                else:
-                    tmp_record.append(None)
+        if (("entities" in tmpdict) and (len(tmpdict["entities"]["hashtags"]) > 0)) and (("text" in tmpdict["entities"]["hashtags"][0]) and isinstance(tmpdict["entities"]["hashtags"][0]["text"], str)):
+            temp = tmpdict["entities"]["hashtags"][0]["text"].lower()
+        else:
+            temp = None
+        if not f_htg(temp):
+            continue
+        tmp_record.append(temp)
 
-        # Append with None if no user data is available
-        while (len(tmp_record) < numofcolumns):
-            tmp_record.append(None)
+        if ("text" in tmpdict):
+            temp = tmpdict["text"]
+        else:
+            temp = None
+        if not f_txt(temp):
+            continue
+        tmp_record.append(temp)
+        if ("retweet_count" in tmpdict):
+            temp = tmpdict["retweet_count"]
+        else:
+            temp = None
+        if not f_rtc(temp):
+            continue
+        tmp_record.append(temp)
+        try:
+            temp = tmpdict["place"]["country"]
+        except Exception:
+            temp = None
+        if not f_ctr(temp):
+            continue
+        tmp_record.append(temp)
+        if (("place" in tmpdict) and (tmpdict["place"] != "null")):
+            temp = tmpdict["place"]
+        else:
+            temp = None
+        if not f_plc(temp):
+            continue
+        tmp_record.append(temp)
+        if ("created_at" in tmpdict):
+            temp = tmpdict["created_at"]
+        else:
+            temp = None
+        if not f_cre(temp):
+            continue
+        tmp_record.append(temp)
+        if ("user" in tmpdict and "name" in tmpdict["user"]):
+            temp = tmpdict["user"]["name"]
+        else:
+            temp = None
+        if not f_unam(temp):
+            continue
+        tmp_record.append(temp)
+        if ("user" in tmpdict and "screen_name" in tmpdict["user"]):
+            temp = tmpdict["user"]["screen_name"]
+        else:
+            temp = None
+        if not f_usna(temp):
+            continue
+        tmp_record.append(temp)
+        if ("user" in tmpdict and "description" in tmpdict["user"]):
+            temp = tmpdict["user"]["description"]
+        else:
+            temp = None
+        if not f_udes(temp):
+            continue
+        tmp_record.append(temp)
+        if ("user" in tmpdict and "created_at" in tmpdict["user"]):
+            temp = tmpdict["user"]["created_at"]
+        else:
+            temp = None
+        if not f_ucre(temp):
+            continue
+        tmp_record.append(temp)
+        if ("user" in tmpdict and "friends_count" in tmpdict["user"]):
+            temp = tmpdict["user"]["friends_count"]
+        else:
+            temp = None
+        if not f_ufrc(temp):
+            continue
+        tmp_record.append(temp)
+        if ("user" in tmpdict and "followers_count" in tmpdict["user"]):
+            temp = tmpdict["user"]["followers_count"]
+        else:
+            temp = None
+        if not f_ufoc(temp):
+            continue
+        tmp_record.append(temp)
+        if ("user" in tmpdict and "location" in tmpdict["user"]):
+            temp = tmpdict["user"]["location"]
+        else:
+            temp = None
+        if not f_uloc(temp):
+            continue
+        tmp_record.append(temp)
+        if ("user" in tmpdict and "lang" in tmpdict["user"]):
+            temp = tmpdict["user"]["lang"]
+        else:
+            temp = None
+        if not f_ulan(temp):
+            continue
+        tmp_record.append(temp)
+        if ("user" in tmpdict and "time_zone" in tmpdict["user"]):
+            temp = tmpdict["user"]["time_zone"]
+        else:
+            temp = None
+        if not f_utzn(temp):
+            continue
+        tmp_record.append(temp)
+        if ("user" in tmpdict and "utc_offset" in tmpdict["user"]):
+            temp = tmpdict["user"]["utc_offset"]
+        else:
+            temp = None
+        if not f_uutc(temp):
+            continue
+        tmp_record.append(temp)
 
-        if not None in tmp_record:
-            new_data = new_data + [tmp_record]
+        new_data = new_data + [tmp_record]
 
     return new_data
 
 
-def M_select_data(default_loc, start, end, selection = [True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True]):
+def M_select_data(default_loc, start, end, f_htg = all, f_txt = all, f_rtc = all, f_ctr = all, f_plc = all, f_cre = all, f_unam = all, f_usna = all, f_udes = all, f_ucre = all, f_ufrc = all, f_ufoc = all, f_uloc = all, f_ulan = all, f_utzn = all, f_uutc = all):
     megastorage = []
     notimported = 0
     for i in range(start, end):
@@ -149,12 +142,12 @@ def M_select_data(default_loc, start, end, selection = [True, True, True, True, 
             filename = default_loc + str(i) + ".json"
         try:
             selected_messages = open(filename).readlines()
-            megastorage = megastorage + Select_data(selected_messages, selection, False)
+            megastorage = megastorage + Select_data(selected_messages, False, f_htg, f_txt, f_rtc, f_ctr, f_plc, f_cre, f_unam, f_usna, f_udes, f_ucre, f_ufrc, f_ufoc, f_uloc, f_ulan, f_utzn, f_uutc)
         except IOError:
             print("File '" + filename + "' does not exist...")
             notimported = notimported + 1
     if notimported == 0:
         print("Directory " + default_loc + " imported (json-files " + str(start) + "-" + str(end) + ")")
     else:
-        print("Directory " + default_loc + " imported (json-files " + str(start) + "-" + str(end) + ", except " + str(notimported) + ")")
+        print("Directory " + default_loc + " imported (json-files " + str(start) + "-" + str(end) + ", except " + str(notimported) + " files)")
     return megastorage

@@ -67,7 +67,7 @@ def SortDec(data, col):
 
 
 
-def clean_str(s, show_ignored_characters):
+def clean_str(s, show_ignored_characters = False):
     new_s = str()
     for char in s:
         if (ord(char) > 31 and ord(char) < 256):
@@ -75,6 +75,7 @@ def clean_str(s, show_ignored_characters):
         else:
             if show_ignored_characters:
                 print("Invalid character '" + char + "' ignored")
+            new_s = new_s + ' '
     return new_s
 
 

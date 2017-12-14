@@ -1,8 +1,12 @@
 from tweepy import Stream
 from tweepy import OAuthHandler
 from tweepy.streaming import StreamListener
+from operations import clean_str
+from sorting import sorting
+from operations import clear_dump
 import json
 
+clear_dump("dump/")
 ## optional in tweet stream analyser (needs files run from nltk)
 #import sentiment_mod as s
 
@@ -16,49 +20,36 @@ asecret = "J9tznxnFd8Om0hcw7QID7ol9mLmev76YJLlCsdnqD2829"
 ## Search_var is the str on which the stream gets filtered
 ## It also appends the filtered upon words to the data file to which the tweets are outputted
 ## more filter words can be added, however they need to be added in the output aswell
-search_var = "#metoo"
+search_var = "snow"
 search_var2 = "meow"
 search_var3 = "house"
 search_var4 = "obama"
 search_var5 = "women"
 
-## Tweet Streaming and writing to file
-class listener(StreamListener):
 
-	def on_data(self, data):
-		all_data = json.loads(data)
-		
-		tweet = all_data["text"]
-		
-## in tweet stream analyser if loop, ## to get all tweets
-#		sentiment_value, confidence = s.sentiment(tweet)
-#		if confidence*100 >= 80:
-#			output = open("tweets_sentiment-out.txt", "a")
-#			output.write(sentiment_value)
-#			output.write('\n')
-#			output.close()
-	
-## normal tweet writing metho
-		output = open("tweets-out-" + str(search_var+"-"+search_var2+"-"+search_var3+"-"+search_var4+"-"+search_var5) + ".txt", "a")	
-		output.write(str(tweet))
-		output.write('\n')
-## extra \n for clarity for tweets containing \n
-		output.write('\n')
-		output.close()
-	
-		print((tweet))
-		return True
+class Listener(StreamListener):
+    def on_data(self, data):
+        all_data = json.loads(data)
+        try:
+            tweet = [clean_str(all_data["text"], False)]
+            sorting(tweet, hashtag_total)
+        except:
+            pass
+        return True
+
+    def on_error(self, status):
+        print(status)
 
 
-	def on_error(self, status):
-		print(status)
 
 ## Setting api keys to acces tweet stream
 auth = OAuthHandler(ckey, csecret)
 auth.set_access_token(atoken, asecret)
+hashtag_total = [['0', 0, 0]]
 
-twitterStream = Stream(auth, listener())
-twitterStream.filter(track=[search_var, search_var2])
+twitterStream = Stream(auth, Listener())
+twitterStream.filter(languages=["en"], track=["I"])
+
 
 
 

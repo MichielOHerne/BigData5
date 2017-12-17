@@ -1,0 +1,41 @@
+#from operations import clean_str
+#from sorting import sorting
+#from operations import clear_dump
+import json
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+from time import time, sleep
+from re import findall
+
+hashtags = ["#randomhashtag"]
+
+
+# def open_json(self, data, hashtag):
+#     for i in range(len(data)):
+#         all_data = json.loads(data)
+#         try:
+#             tweet = [clean_str(all_data["text"], False)]
+#             sort_into_list(tweet, hashtag)
+#         except:
+#             pass
+#         return True
+
+
+def sort_into_list(tweet, hashtag_total):
+    for z in range(len(tweet)):
+        tweet_sent = []
+        tag = findall("r"+hashtag_total[0], tweet[z])  # select hashtag to filter on
+        tweet_sent.append(tweet[z])
+        sentiment = []
+        sid = SentimentIntensityAnalyzer()
+        ss = sid.polarity_scores(tweet[z])
+        for k in sorted(ss):
+            sentiment.append(ss[k])
+        tweet_sent.append(sentiment)
+        tweet_sent.append(time())
+        hashtag_total.append(tweet_sent)
+        return hashtag_total
+
+to_sort = ["this is a random tweet #randomhashtag"]
+
+a = sort_into_list(to_sort, hashtags)
+print(a)

@@ -90,34 +90,38 @@ def plot_world(data_list, color_neg='rgb(149,28,28)', color_neu='rgb(166,118,42)
           list[1:][1] = sentiment (list)
           list[1:][1][0] = compound (float)
           list[1:][2] = timestamp (int)
-          list[1:][3] = country_code (str)
+          list[1:][3] = country_code (str) -> No error message when incorrect!
         Optional arguments are the colors in the compound-scale, example:
           color_neg="rgb(149,28,28)" '''
-    print("ALFA FASE - FUNCTIE NIET AANROEPEN")
     name = data_list[0]
+    timestamp = [datetime.datetime.fromtimestamp(data_list[1][2]).strftime('%d-%m-%Y (%H:%M)'), datetime.datetime.fromtimestamp(data_list[len(data_list)-1][2]).strftime('%d-%m-%Y (%H:%M)')]
     country = []
     compound = []
+    nom = [] # number of messages
+    # Merge messages from the same country
     for i in range(1, len(data_list)):
-        country.append(data_list[i][3])
-        compound.append(data_list[i][1][0])
-    data = [ dict(
-            type = 'choropleth',
-            locations = country,
-            z = compound,
-            zmin = -1,
-            zmax = 1,
-            marker = dict(
-                line = dict (
-                    color = 'rgb(180,180,180)',
-                    width = 0.5
-                ) ),
-            colorscale = [[0, color_neg],[0.5, color_neu],[1, color_pos]]
-          ) ]
-    layout = dict(title = 'Data for <b>' + name +'</b>', geo = dict(showframe = False, showland = True, landcolor = "rgb(192, 192, 192)", showcoastlines = True, projection = dict(type = 'Mercator')))
-    fig = dict( data=data, layout=layout )
+        duplicate = False
+        for j in range(len(country)):
+            if country[j] == data_list[i][3]:
+                duplicate = True
+                compound[j].append(data_list[i][1][0])
+                break
+        if not duplicate:
+            country.append(data_list[i][3])
+            compound.append([data_list[i][1][0]])
+    # Calculate the average compound for each country
+    for i in range(len(compound)):
+        tmp = 0
+        for j in range(len(compound[i])):
+            tmp = tmp + compound[i][j]
+        nom.append(len(compound[i]))
+        compound[i] = round(tmp/len(compound[i]),3)
+    data = [dict(type = 'choropleth', locations = country, z = compound, zmin = -1, zmax = 1, marker = dict(line = dict (color = 'rgb(180,180,180)', width = 0.5)), colorscale = [[0, color_neg],[0.5, color_neu],[1, color_pos]])]
+    layout = dict(title = 'Data for <b>'+name+'</b><br><span style="font-size:64%;"><i>Between '+timestamp[0]+' and '+timestamp[1]+'</i></span>', geo = dict(showframe = False, showland = True, landcolor = "rgb(192, 192, 192)", showcoastlines = True, projection = dict(type = 'Mercator')))
+    fig = dict(data=data, layout=layout)
     py.offline.plot(fig, validate=False, filename='Plots/sentiment-world.html')
 
-zinloos = ["#kerst", ["het is bijna #kerst", [0.3, 0.2, 0.5, 0.3], 1375432865, 'NLD'], ["heb zin in #kerst", [0.4, 0.1, 0.5, 0.4], 1375433865, 'DEU'], ["ik hou zooo veel van #kerst", [0.8, 0.1, 0.2, 0.7], 1375436864, 'USA'], ["Wat praten we over #kerst in de zomer?", [0.2, 0.1, 0.7, 0.2], 1375458723, 'CHN'], ["Het is #kerst over 145 dagen!", [0.3, 0, 0.6, 0.4], 1375474832, 'FRA'], ["Wat heb ik een hekel aan #kerstmuziek", [-0.6, 0.6, 0.2, 0.2], 1375476592, 'GBR'], ["Zo blij! Ik hoef helemaal niet aan #kerstinkopen te denken", [0.5, 0.1, 0.2, 0.7], 1375476912, 'ITA']]
+zinloos = ["#kerst", ["het is bijna #kerst", [0.3, 0.2, 0.5, 0.3], 1375432865, 'NLD'], ["heb zin in #kerst", [0.4, 0.1, 0.5, 0.4], 1375433865, 'DEU'], ["ik hou zooo veel van #kerst", [0.8, 0.1, 0.2, 0.7], 1375436864, 'ITA'], ["Wat praten we over #kerst in de zomer?", [0.2, 0.1, 0.7, 0.2], 1375458723, 'ITA'], ["Het is #kerst over 145 dagen!", [0.3, 0, 0.6, 0.4], 1375474832, 'FRA'], ["Wat heb ik een hekel aan #kerstmuziek", [-0.6, 0.6, 0.2, 0.2], 1375476592, 'GBR'], ["Zo blij! Ik hoef helemaal niet aan #kerstinkopen te denken", [0.5, 0.1, 0.2, 0.7], 1375476912, 'ITA']]
 #plot_line(zinloos)
 #plot_bar(zinloos)
 plot_world(zinloos)

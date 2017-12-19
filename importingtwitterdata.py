@@ -48,11 +48,13 @@ auth.set_access_token(atoken, asecret)
 hashtag_total = [['0', 0, 0]]
 
 twitterStream = Stream(auth, Listener())
+
+## Filter per word
 twitterStream.filter(languages=["en"], track=["I"])
 
-
-
-
+## Filter for locations
+# [-180,-90,180,90] equals the whole world
+#twitterStream.filter(locations=[-180,-90,180,90], async=True)
 
 
 

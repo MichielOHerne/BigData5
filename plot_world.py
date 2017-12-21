@@ -1,7 +1,7 @@
 import plotly as py
 import datetime
 
-def plot_world(data_list, loc_mode="ISO-3", map_mode='sentiment'):
+def plot_world(data_list, loc_mode="ISO-3"):
     ''' Returns an interactive world map with the data in the directory "Plots/"
         Takes as argument a list with:
           list[0] = name (str)
@@ -12,10 +12,7 @@ def plot_world(data_list, loc_mode="ISO-3", map_mode='sentiment'):
           list[1:][2] = timestamp (int)
           list[1:][3] = country_code (str) -> No error message when incorrect!
         Optional argument, switch between country names or the three letter name
-          loc_mode="country names" or "ISO-3"
-        Optional argument, switch between what which is displayed in the map: map_mode=
-          'sentiment': Plot of the sentiment per country (default)
-          'occurrence': Plot how much a topic is mentioned '''
+          loc_mode="country names" or "ISO-3" '''
     colors = ['rgb(149,28,28)', 'rgb(166,118,42)', 'rgb(128,192,50)']
     colors2 = ['rgb(192,248,248)', 'rgb(12,152,152)']
     timestamp = [datetime.datetime.fromtimestamp(data_list[1][2]).strftime('%d-%m-%Y (%H:%M)'), datetime.datetime.fromtimestamp(data_list[len(data_list)-1][2]).strftime('%d-%m-%Y (%H:%M)')]
@@ -44,13 +41,12 @@ def plot_world(data_list, loc_mode="ISO-3", map_mode='sentiment'):
         info.append("Messages: "+str(len(compound[i]))+"<br>Compound: "+str(tmp))
         nom.append(len(compound[i]))
         compound[i] = tmp
-    if map_mode == 'sentiment':
-        data = [dict(type='choropleth', locations=country, z=compound, text=info, zmin=-1, zmax=1, marker=dict(line=dict(color='rgb(180,180,180)', width=0.5)), colorscale=[[0, colors[0]], [0.5, colors[1]], [1, colors[2]]], colorbar=dict(title="Compound"), hoverinfo='text+location', locationmode=loc_mode)]
-    elif map_mode == 'occurrence':
-        data = [dict(type='choropleth', locations=country, z=nom, text=info, zmin=0, marker=dict(line=dict(color='rgb(180,180,180)', width=0.5)), colorscale=[[0, colors2[0]], [1, colors2[1]]], colorbar=dict(title="occurrence"), hoverinfo='text+location', locationmode=loc_mode)]
-    else:
-        print("Unknown map_mode")
-        data = None
-    layout = dict(title=name, geo=dict(showframe=False, showland=True, landcolor="rgb(192, 192, 192)", showcoastlines=True, projection=dict(type='Mercator')))
+    # Different data
+    data_c = dict(type='choropleth', locations=country, z=compound, text=info, zmin=-1, zmax=1, marker=dict(line=dict(color='rgb(180,180,180)', width=0.5)), colorscale=[[0, colors[0]], [0.5, colors[1]], [1, colors[2]]], colorbar=dict(title="Compound"), hoverinfo='text+location', locationmode=loc_mode)
+    data_a = dict(type='choropleth', locations=country, z=nom, text=info, zmin=0, marker=dict(line=dict(color='rgb(180,180,180)', width=0.5)), colorscale=[[0, colors2[0]], [1, colors2[1]]], colorbar=dict(title="Occurrence"), hoverinfo='text+location', locationmode=loc_mode)
+    data = [data_c, data_a]
+    choose_data = list([dict(active=-1, buttons=list([dict(label='Sentiment', method='update', args=[{'visible': [True, False]}]), dict(label='Occurrence', method='update', args=[{'visible': [False, True]}])]))])
+    # Plot
+    layout = dict(title=name, geo=dict(showframe=False, showland=True, landcolor="rgb(192, 192, 192)", showcoastlines=True, projection=dict(type='Mercator')), updatemenus=choose_data)
     fig = dict(data=data, layout=layout)
     py.offline.plot(fig, validate=False, filename='Plots/sentiment-world.html')

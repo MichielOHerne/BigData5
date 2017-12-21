@@ -1,7 +1,7 @@
 import plotly as py
 import datetime
 
-def plot_world(data_list, color_neg='rgb(149,28,28)', color_neu='rgb(166,118,42)', color_pos='rgb(128,192,50)', loc_mode="ISO-3", map_mode='sentiment'):
+def plot_world(data_list, loc_mode="ISO-3", map_mode='sentiment'):
     ''' Returns an interactive world map with the data in the directory "Plots/"
         Takes as argument a list with:
           list[0] = name (str)
@@ -11,12 +11,13 @@ def plot_world(data_list, color_neg='rgb(149,28,28)', color_neu='rgb(166,118,42)
           list[1:][1][0] = compound (float)
           list[1:][2] = timestamp (int)
           list[1:][3] = country_code (str) -> No error message when incorrect!
-        Optional arguments are the colors in the compound-scale
         Optional argument, switch between country names or the three letter name
           loc_mode="country names" or "ISO-3"
         Optional argument, switch between what which is displayed in the map: map_mode=
           'sentiment': Plot of the sentiment per country (default)
           'occurrence': Plot how much a topic is mentioned '''
+    colors = ['rgb(149,28,28)', 'rgb(166,118,42)', 'rgb(128,192,50)']
+    colors2 = ['rgb(192,248,248)', 'rgb(12,152,152)']
     timestamp = [datetime.datetime.fromtimestamp(data_list[1][2]).strftime('%d-%m-%Y (%H:%M)'), datetime.datetime.fromtimestamp(data_list[len(data_list)-1][2]).strftime('%d-%m-%Y (%H:%M)')]
     name = 'Data for <b>'+data_list[0]+'</b><br><span style="font-size:64%;"><i>'+str(len(data_list)-1)+' messages between '+timestamp[0]+' and '+timestamp[1]+'</i></span>'
     country = []
@@ -44,9 +45,9 @@ def plot_world(data_list, color_neg='rgb(149,28,28)', color_neu='rgb(166,118,42)
         nom.append(len(compound[i]))
         compound[i] = tmp
     if map_mode == 'sentiment':
-        data = [dict(type='choropleth', locations=country, z=compound, text=info, zmin=-1, zmax=1, marker=dict(line=dict(color='rgb(180,180,180)', width=0.5)), colorscale=[[0, color_neg], [0.5, color_neu], [1, color_pos]], colorbar=dict(title="Compound"), hoverinfo='text+location', locationmode=loc_mode)]
+        data = [dict(type='choropleth', locations=country, z=compound, text=info, zmin=-1, zmax=1, marker=dict(line=dict(color='rgb(180,180,180)', width=0.5)), colorscale=[[0, colors[0]], [0.5, colors[1]], [1, colors[2]]], colorbar=dict(title="Compound"), hoverinfo='text+location', locationmode=loc_mode)]
     elif map_mode == 'occurrence':
-        data = [dict(type='choropleth', locations=country, z=nom, text=info, zmin=0, marker=dict(line=dict(color='rgb(180,180,180)', width=0.5)), colorscale=[[0, color_neg], [0.5, color_neu], [1, color_pos]], colorbar=dict(title="occurrence"), hoverinfo='text+location', locationmode=loc_mode)]
+        data = [dict(type='choropleth', locations=country, z=nom, text=info, zmin=0, marker=dict(line=dict(color='rgb(180,180,180)', width=0.5)), colorscale=[[0, colors2[0]], [1, colors2[1]]], colorbar=dict(title="occurrence"), hoverinfo='text+location', locationmode=loc_mode)]
     else:
         print("Unknown map_mode")
         data = None

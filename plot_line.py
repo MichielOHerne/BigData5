@@ -2,7 +2,7 @@ import plotly as py
 from plotly.graph_objs import *
 import datetime
 
-def plot_line(data_list):
+def plot_line(data_list, mai="hour"):
     ''' Returns an interactive line plot in the directory "Plots/"
         Takes as argument one list with at least:
           list[0] = name (str)
@@ -10,7 +10,13 @@ def plot_line(data_list):
           list[1:][0] = message (str)
           list[1:][1] = sentiment (list)
           list[1:][1][0] = compound (float)
-          list[1:][2] = timestamp (int) '''
+          list[1:][2] = timestamp (int)
+        Optional argument for the Moving Average Interval mai=
+          "hour" or "minute"  '''
+    if mai == "hour":
+        tsss = '%Y-%m-%d %H:30'
+    elif mai == "minute":
+        tsss = '%Y-%m-%d %H:%M:30'
     x_axis = []
     y_axis = []
     x_moving_avg = []
@@ -19,7 +25,7 @@ def plot_line(data_list):
     total = 0
     for i in range(1, len(data_list)):
         timestamp_e = datetime.datetime.fromtimestamp(data_list[i][2]).strftime('%Y-%m-%d %H:%M:%S')    # Extended timestamp
-        timestamp_s = datetime.datetime.fromtimestamp(data_list[i][2]).strftime('%Y-%m-%d %H:30')       # Short timestamp
+        timestamp_s = datetime.datetime.fromtimestamp(data_list[i][2]).strftime(tsss)     # Shorter timestamp
         x_axis.append(timestamp_e)
         y_axis.append(data_list[i][1][0])   # Compound
         messages.append("Compound: " + str(data_list[i][1][0]) + "<br><i>\"" + str(data_list[i][0]) + "\"</i>")   # Message
@@ -41,7 +47,7 @@ def plot_line(data_list):
     # Lines
     line = Scatter(x=x_axis, y=y_axis, text=messages, mode='markers', name='Individual message', hoverinfo='text', line=dict(color='rgb(80,80,80)'))
     avg_ref = Scatter(x=[x_axis[0], x_axis[len(x_axis)-1]], y=[avg]*2, text=['Average: ' + str(avg)]*2, line=dict(shape='linear', dash='dash', color='rgb(240,192,48)'), name="Total average: " + str(avg), hoverinfo='text')
-    mov_avg = Scatter(x=x_moving_avg, y=y_moving_avg, text=['Moving average']*len(x_moving_avg), line=dict(shape='spline', color='rgb(24,192,24)'), name='Moving average (hour)', hoverinfo='y+text')
+    mov_avg = Scatter(x=x_moving_avg, y=y_moving_avg, text=['Moving average']*len(x_moving_avg), line=dict(shape='spline', color='rgb(24,192,24)'), name='Moving average (' + mai + ')', hoverinfo='y+text')
     layout = dict(title='Data for <b>' + data_list[0] + '</b>', xaxis=dict(title='Time'), yaxis=dict(title='Compound', range=[-1, 1]))
     figure = dict(data=Data([line, mov_avg, avg_ref]), layout=layout)
     py.offline.plot(figure, filename='Plots/sentiment-line.html')

@@ -50,10 +50,15 @@ class Application(Frame):
         self.instruction = Label(self, text = "===== DISPLAY OPTIONS =====")
         self.instruction.grid(row = 0, column = 3, columnspan = 2, sticky = W)
         self.hopie = BooleanVar()
-        self.add_settings = Label(self, text = "Pie-chart hot-one mode: ")
+        self.mal = "hour"
+        self.add_settings = Label(self, text = "Line graph moving average: ")
         self.add_settings.grid(row = 1, column = 3, columnspan = 2, sticky = W)
-        Radiobutton(self, text = "Enable", value = True, variable = self.hopie).grid(row = 2, column = 3, sticky = W)
-        Radiobutton(self, text = "Disable", value = False, variable = self.hopie).grid(row = 3, column = 3, sticky = W)
+        Radiobutton(self, text = "Minute", value = "minute", variable = self.mal).grid(row = 2, column = 3, sticky = W)
+        Radiobutton(self, text = "Hour", value = "hour", variable = self.mal).grid(row = 3, column = 3, sticky = W)
+        self.add_settings = Label(self, text = "Pie-chart hot-one mode: ")
+        self.add_settings.grid(row = 4, column = 3, columnspan = 2, sticky = W)
+        Radiobutton(self, text = "Enable", value = True, variable = self.hopie).grid(row = 5, column = 3, sticky = W)
+        Radiobutton(self, text = "Disable", value = False, variable = self.hopie).grid(row = 6, column = 3, sticky = W)
 
         self.instruction = Label(self, text = "===== STATUS =====")
         self.instruction.grid(row = 9, column = 0, columnspan = 5, sticky = W)
@@ -93,7 +98,7 @@ class Application(Frame):
             message = str(self.mes_count) + "\tPlotting Line graph\n"
             self.text.insert(0.0, message)
             self.mes_count = self.mes_count + 1
-            plot_line(self.datastorage)
+            plot_line(self.datastorage, mai=self.mal.get)
             self.text.insert(0.0, str(self.mes_count) + "\tDone. Ready\n")
             self.mes_count = self.mes_count + 1
         else:

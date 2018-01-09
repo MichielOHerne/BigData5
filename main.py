@@ -4,7 +4,6 @@ from plot_bar import plot_bar
 from plot_line import plot_line
 from plot_pie import plot_pie
 from plot_world import plot_world
-print("done importing")
 all_hashtags = []
 
 

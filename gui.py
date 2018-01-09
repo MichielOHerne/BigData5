@@ -3,6 +3,8 @@ from plot_line import *
 from plot_bar import *
 from plot_world import *
 from plot_pie import *
+from plot_overview import *
+FIX DE IMPORT
 
 class Application(Frame):
     def __init__(self, master):
@@ -68,6 +70,8 @@ class Application(Frame):
         message = str(self.mes_count) + "\tCollecting data (" + str(time) + "s)\n"
         self.text.insert(0.0, message)
         self.mes_count = self.mes_count + 1
+        max_time = set_max_time(time)
+        data = import_data()
         self.datastorage = ["#kerst", ["het is bijna #kerst", [0.3, 0.2, 0.5, 0.3], 1375432865, 'NLD'], ["Wat hou ik toch veel van #kerst", [0.5, 0.1, 0.3, 0.6], 1375433124, 'NLD'], ["heb zin in #kerst", [0.4, 0.1, 0.3, 0.6], 1375433865, 'DEU'], ["ik hou zooo veel van #kerst", [0.8, 0.1, 0.1, 0.8], 1375436864, 'ITA'], ["Wat praten we over #kerst in de zomer?", [0.2, 0.1, 0.7, 0.2], 1375458723, 'ITA'], ["Het is #kerst over 145 dagen!", [0.3, 0, 0.6, 0.4], 1375474832, 'FRA'], ["Wat heb ik een hekel aan #kerstmuziek", [-0.6, 0.6, 0.2, 0.2], 1375476592, 'GBR'], ["Zo blij! Ik hoef helemaal niet aan #kerstinkopen te denken", [0.5, 0.1, 0.2, 0.7], 1375476912, 'ITA']]
         self.text.insert(0.0, str(self.mes_count) + "\tData imported\n")
         self.mes_count = self.mes_count + 1
@@ -76,6 +80,7 @@ class Application(Frame):
         message = str(self.mes_count) + "\tFuntion unknown\n"
         self.text.insert(0.0, message)
         self.mes_count = self.mes_count + 1
+        plot_hbar(FIXME)
 
     def execute_a(self):
         if self.checkdata():

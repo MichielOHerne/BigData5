@@ -6,7 +6,7 @@ from plot_pie import *
 from plot_overview import *
 from sort_for_graphing import open_json, open_json_for_hashtag
 from importingtwitterdata_new import import_data, set_max_time
-from main import *
+from mainV2 import *
 
 class Application(Frame):
     def __init__(self, master):
@@ -50,7 +50,7 @@ class Application(Frame):
         self.instruction = Label(self, text = "===== DISPLAY OPTIONS =====")
         self.instruction.grid(row = 0, column = 3, columnspan = 2, sticky = W)
         self.hopie = BooleanVar()
-        self.mal = "hour"
+        self.mal = StringVar()
         self.add_settings = Label(self, text = "Line graph moving average: ")
         self.add_settings.grid(row = 1, column = 3, columnspan = 2, sticky = W)
         Radiobutton(self, text = "Minute", value = "minute", variable = self.mal).grid(row = 2, column = 3, sticky = W)
@@ -98,7 +98,8 @@ class Application(Frame):
             message = str(self.mes_count) + "\tPlotting Line graph\n"
             self.text.insert(0.0, message)
             self.mes_count = self.mes_count + 1
-            plot_line(self.datastorage, mai=self.mal.get)
+            plot_line(self.datastorage, mai=self.mal.get())
+            print(self.mal)
             self.text.insert(0.0, str(self.mes_count) + "\tDone. Ready\n")
             self.mes_count = self.mes_count + 1
         else:

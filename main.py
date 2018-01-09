@@ -15,15 +15,14 @@ def sort_hash(data, col):
 
 data = import_data()
 all_hashtags = open_json_for_hashtag("twitterdata.json", all_hashtags)
-print(all_hashtags)
 sorted_all_hashtags = sort_hash(all_hashtags, 1)
-print(sorted_all_hashtags)
+print(sorted_all_hashtags[0:20])
 
 sent_tweets = open_json("twitterdata.json", [sorted_all_hashtags[0][0]])
 plot_line(sent_tweets)
 plot_bar(sent_tweets)
 plot_pie(sent_tweets)
-plot_world(sent_tweets)
+plot_world(sent_tweets, "country names")
 
 
 # for i in range(len(sorted_all_hashtags)):
@@ -32,4 +31,4 @@ plot_world(sent_tweets)
 #         plot_line(sent_tweets)
 #         plot_bar(sent_tweets)
 #         plot_pie(sent_tweets)
-#         plot_world(sent_tweets)
+#         plot_world(sent_tweets, "country names")

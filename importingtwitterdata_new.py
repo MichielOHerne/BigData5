@@ -30,8 +30,10 @@ f = open('twitterdata.json', 'w')
 
 first = True
 json_data = []
-
 t0 = time()
+max_time = 0
+
+
 class Listener(StreamListener):
     def on_data(self, data):
         global t0
@@ -44,9 +46,10 @@ class Listener(StreamListener):
         except:
             pass
         # change this       \/ to change runtime
-        if time() - t0 >= 60*1:
+        if time() - t0 >= max_time:
             t0 = time()
-            stop_running(input("do you want more data?[No]"), json_data)
+            # stop_running(input("do you want more data?[No]"), json_data)
+            stop_running("No", json_data)
         return True, json_data
 
     def on_error(self, status):
@@ -84,15 +87,24 @@ def stop_running(key, json_data):
     else:
         pass
 
-try:
-    while run:
-        t0 = time()
-        print("stream is running")
-        twitterStream = Stream(auth, Listener())
-        json_data = twitterStream.filter(languages=["en"], track=["a", "the", "I", "you"])
-# except KeyboardInterrupt:
-#     with open('twitterdatatest.json', 'w') as outfile:
-#         json.dump(json_data, outfile)
-#     print("done")
-except:
-    pass
+
+def import_data():
+    try:
+        while run:
+            t0 = time()
+            print("stream is running")
+            twitterStream = Stream(auth, Listener())
+            json_data = twitterStream.filter(languages=["en"], track=["a", "the", "I", "you"])
+    # except KeyboardInterrupt:
+    #     with open('twitterdatatest.json', 'w') as outfile:
+    #         json.dump(json_data, outfile)
+    #     print("done")
+    except:
+        pass
+    return
+
+
+def set_max_time(set_time):
+    global max_time
+    max_time = set_time
+    return max_time

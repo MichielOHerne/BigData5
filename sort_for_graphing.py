@@ -49,7 +49,8 @@ def open_json(data, hashtag):
                 pass
     return hashtag
 
-def open_json_for_hashtag(data, hashtag):
+def open_json_for_hashtag(data):
+    hashtag = []
     with open(data) as data_file:
         hold = json.load(data_file)
         for i in range(len(hold)):

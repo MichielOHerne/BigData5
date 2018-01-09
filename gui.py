@@ -25,6 +25,9 @@ class Application(Frame):
         self.make_button = Button(self, text = "Collect data", command = self.collect_hts)
         self.make_button.grid(row = 3, column = 0, sticky = W)
 
+        self.make_button = Button(self, text = "Plot popular tags", command = self.plot_popular)
+        self.make_button.grid(row = 4, column = 0, sticky = W)
+
 
         self.instruction = Label(self, text = "===== DISPLAY DATA =====")
         self.instruction.grid(row = 0, column = 2, sticky = W)
@@ -46,24 +49,33 @@ class Application(Frame):
         Radiobutton(self, text = "Disable", value = False, variable = self.hopie).grid(row = 3, column = 3, sticky = W)
 
         self.instruction = Label(self, text = "===== STATUS =====")
-        self.instruction.grid(row = 5, column = 0, columnspan = 5, sticky = W)
+        self.instruction.grid(row = 9, column = 0, columnspan = 5, sticky = W)
 
         self.text = Text(self, width = 74, height = 12, wrap = WORD)
-        self.text.grid(row = 6, column = 0, columnspan = 5, sticky = W)
+        self.text.grid(row = 10, column = 0, columnspan = 5, sticky = W)
 
 
         self.text.insert(0.0, str(self.mes_count) + "\tReady\n\tCollect first the data")
         self.mes_count = self.mes_count + 1
 
     def collect_hts(self):
-        time = int(self.input.get())
+        try:
+            time = int(self.input.get())
+        except ValueError:
+            time = 0
+            self.text.insert(0.0, str(self.mes_count) + "\tPlease enter a integer value\n")
+            self.mes_count = self.mes_count + 1
         message = str(self.mes_count) + "\tCollecting data (" + str(time) + "s)\n"
         self.text.insert(0.0, message)
         self.mes_count = self.mes_count + 1
         self.datastorage = ["#kerst", ["het is bijna #kerst", [0.3, 0.2, 0.5, 0.3], 1375432865, 'NLD'], ["Wat hou ik toch veel van #kerst", [0.5, 0.1, 0.3, 0.6], 1375433124, 'NLD'], ["heb zin in #kerst", [0.4, 0.1, 0.3, 0.6], 1375433865, 'DEU'], ["ik hou zooo veel van #kerst", [0.8, 0.1, 0.1, 0.8], 1375436864, 'ITA'], ["Wat praten we over #kerst in de zomer?", [0.2, 0.1, 0.7, 0.2], 1375458723, 'ITA'], ["Het is #kerst over 145 dagen!", [0.3, 0, 0.6, 0.4], 1375474832, 'FRA'], ["Wat heb ik een hekel aan #kerstmuziek", [-0.6, 0.6, 0.2, 0.2], 1375476592, 'GBR'], ["Zo blij! Ik hoef helemaal niet aan #kerstinkopen te denken", [0.5, 0.1, 0.2, 0.7], 1375476912, 'ITA']]
         self.text.insert(0.0, str(self.mes_count) + "\tData imported\n")
         self.mes_count = self.mes_count + 1
-        
+
+    def plot_popular(self):
+        message = str(self.mes_count) + "\tFuntion unknown\n"
+        self.text.insert(0.0, message)
+        self.mes_count = self.mes_count + 1
 
     def execute_a(self):
         if self.checkdata():

@@ -51,6 +51,7 @@ class Application(Frame):
         self.instruction.grid(row = 0, column = 3, columnspan = 2, sticky = W)
         self.hopie = BooleanVar()
         self.mal = StringVar()
+        self.mal.set("hour")
         self.add_settings = Label(self, text = "Line graph moving average: ")
         self.add_settings.grid(row = 1, column = 3, columnspan = 2, sticky = W)
         Radiobutton(self, text = "Minute", value = "minute", variable = self.mal).grid(row = 2, column = 3, sticky = W)
@@ -89,9 +90,9 @@ class Application(Frame):
         message = str(self.mes_count) + "\tPlotting overview of most common tags\n"
         self.text.insert(0.0, message)
         self.mes_count = self.mes_count + 1
-        print(sorted_all_hashtags)
-        sorted_all_hashtags.append(sort_hashtags("twitterdata.json"))
-        plot_hbar(sorted_all_hashtags[0][0:16])
+        # print(sorted_all_hashtags)
+        sorted_all_hashtags = sort_hashtags("twitterdata.json")
+        plot_hbar(sorted_all_hashtags[0:16])
 
     def execute_a(self):
         if self.checkdata():

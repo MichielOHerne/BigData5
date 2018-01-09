@@ -88,7 +88,6 @@ class Application(Frame):
         plot_hbar(sorted_all_hashtags[0:16])
 
     def execute_a(self):
-        self.select_ht()
         if self.checkdata():
             message = str(self.mes_count) + "\tPlotting Line graph\n"
             self.text.insert(0.0, message)
@@ -101,7 +100,6 @@ class Application(Frame):
             self.mes_count = self.mes_count + 1
 
     def execute_b(self):
-        self.select_ht()
         if self.checkdata():
             message = str(self.mes_count) + "\tPlotting Bar-chart\n"
             self.text.insert(0.0, message)
@@ -114,7 +112,6 @@ class Application(Frame):
             self.mes_count = self.mes_count + 1
 
     def execute_c(self):
-        self.select_ht()
         if self.checkdata():
             message = str(self.mes_count) + "\tPlotting Pie-chart\n"
             self.text.insert(0.0, message)
@@ -127,7 +124,6 @@ class Application(Frame):
             self.mes_count = self.mes_count + 1
 
     def execute_d(self):
-        self.select_ht()
         if self.checkdata():
             message = str(self.mes_count) + "\tPlotting World-map\n"
             self.text.insert(0.0, message)
@@ -140,6 +136,7 @@ class Application(Frame):
             self.mes_count = self.mes_count + 1
 
     def checkdata(self):
+        self.select_ht()
         if len(self.datastorage) > 1:
             return True
         return False

@@ -89,6 +89,7 @@ def stop_running(key, json_data):
 
 
 def import_data():
+
     try:
         while run:
             t0 = time()

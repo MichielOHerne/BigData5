@@ -12,17 +12,26 @@ def sort_hash(data, col):
     new_data.extend(sorted(data[0:], key=lambda data: -data[col]))
     return new_data
 
-max_time = set_max_time(20)
-data = import_data()
-all_hashtags = open_json_for_hashtag("twitterdata.json", all_hashtags)
-sorted_all_hashtags = sort_hash(all_hashtags, 1)
-print(sorted_all_hashtags[0:20])
 
-sent_tweets = open_json("twitterdata.json", [sorted_all_hashtags[0][0]])
-plot_line(sent_tweets)
-plot_bar(sent_tweets)
-plot_pie(sent_tweets)
-plot_world(sent_tweets, "country names")
+def import_time(time):
+    max_time = set_max_time(time)
+    data = import_data()
+
+
+def sort_hashtags(json):
+    sorted_all_hashtags = []
+    all_hashtags = []
+    all_hashtags = open_json_for_hashtag(json)
+    sorted_all_hashtags = sort_hash(all_hashtags, 1)
+    return sorted_all_hashtags
+
+
+def filter_hashtags(selected_hashtag):
+    sent_tweets = []
+    sent_tweets = open_json("twitterdata.json", selected_hashtag)
+    return sent_tweets
+
+
 
 
 # for i in range(len(sorted_all_hashtags)):

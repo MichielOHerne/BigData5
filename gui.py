@@ -6,6 +6,7 @@ from plot_pie import *
 from plot_overview import *
 from sort_for_graphing import open_json, open_json_for_hashtag
 from importingtwitterdata_new import import_data, set_max_time
+from main import *
 
 class Application(Frame):
     def __init__(self, master):
@@ -39,26 +40,35 @@ class Application(Frame):
         self.input2.grid(row = 2, column = 2, sticky = W)
         self.make_button = Button(self, text = "Plot Line graph", command = self.execute_a)
         self.make_button.grid(row = 3, column = 2, sticky = W)
-        self.make_button = Button(self, text = "Plot Bar-chart", command = self.execute_b)
+        self.make_button = Button(self, text = "Plot Bar chart", command = self.execute_b)
         self.make_button.grid(row = 4, column = 2, sticky = W)
-        self.make_button = Button(self, text = "Plot Pie-chart", command = self.execute_c)
+        self.make_button = Button(self, text = "Plot Pie chart", command = self.execute_c)
         self.make_button.grid(row = 5, column = 2, sticky = W)
-        self.make_button = Button(self, text = "Plot World-map", command = self.execute_d)
+        self.make_button = Button(self, text = "Plot World map", command = self.execute_d)
         self.make_button.grid(row = 6, column = 2, sticky = W)
 
         self.instruction = Label(self, text = "===== DISPLAY OPTIONS =====")
         self.instruction.grid(row = 0, column = 3, columnspan = 2, sticky = W)
         self.hopie = BooleanVar()
-        self.add_settings = Label(self, text = "Pie-chart hot-one mode: ")
+        self.mal = StringVar()
+        self.mal.set("hour")
+        self.add_settings = Label(self, text = "Line graph moving average:")
         self.add_settings.grid(row = 1, column = 3, columnspan = 2, sticky = W)
-        Radiobutton(self, text = "Enable", value = True, variable = self.hopie).grid(row = 2, column = 3, sticky = W)
-        Radiobutton(self, text = "Disable", value = False, variable = self.hopie).grid(row = 3, column = 3, sticky = W)
+        Radiobutton(self, text = "Minute", value = "minute", variable = self.mal).grid(row = 2, column = 3, sticky = W)
+        Radiobutton(self, text = "Hour", value = "hour", variable = self.mal).grid(row = 3, column = 3, sticky = W)
+        self.add_settings = Label(self, text = "Pie chart hot-one mode:")
+        self.add_settings.grid(row = 4, column = 3, columnspan = 2, sticky = W)
+        Radiobutton(self, text = "Enable", value = True, variable = self.hopie).grid(row = 5, column = 3, sticky = W)
+        Radiobutton(self, text = "Disable", value = False, variable = self.hopie).grid(row = 6, column = 3, sticky = W)
 
-        self.instruction = Label(self, text = "===== STATUS =====")
+        self.instruction = Label(self, text = "=====   STATUS   =====")
         self.instruction.grid(row = 9, column = 0, columnspan = 5, sticky = W)
 
         self.text = Text(self, width = 74, height = 12, wrap = WORD)
         self.text.grid(row = 10, column = 0, columnspan = 5, sticky = W)
+        
+        self.instruction = Label(self, text = " Tim Al, Michiel O'Herne, Casper Spronk")
+        self.instruction.grid(row = 11, column = 3, sticky = W)
 
 
         self.text.insert(0.0, str(self.mes_count) + "\tReady\n\tCollect first the data")
@@ -74,17 +84,16 @@ class Application(Frame):
         message = str(self.mes_count) + "\tCollecting data (" + str(time) + "s)\n"
         self.text.insert(0.0, message)
         self.mes_count = self.mes_count + 1
-        max_time = set_max_time(time)
-        data = import_data()
-        self.text.insert(0.0, str(self.mes_count) + "\tData imported\n")
+        data = import_time(time)
+        self.text.insert(0.0, str(self.mes_count) + "\tData imported. Ready\n")
         self.mes_count = self.mes_count + 1
 
     def plot_popular(self):
+        sorted_all_hashtags = []
         message = str(self.mes_count) + "\tPlotting overview of most common tags\n"
         self.text.insert(0.0, message)
         self.mes_count = self.mes_count + 1
-        all_hashtags = open_json_for_hashtag("twitterdata.json")
-        sorted_all_hashtags = self.sort_hash(all_hashtags, 1)
+        sorted_all_hashtags = sort_hashtags("twitterdata.json")
         plot_hbar(sorted_all_hashtags[0:16])
 
     def execute_a(self):
@@ -92,7 +101,8 @@ class Application(Frame):
             message = str(self.mes_count) + "\tPlotting Line graph\n"
             self.text.insert(0.0, message)
             self.mes_count = self.mes_count + 1
-            plot_line(self.datastorage)
+            plot_line(self.datastorage, mai=self.mal.get())
+            print(self.mal)
             self.text.insert(0.0, str(self.mes_count) + "\tDone. Ready\n")
             self.mes_count = self.mes_count + 1
         else:
@@ -101,7 +111,7 @@ class Application(Frame):
 
     def execute_b(self):
         if self.checkdata():
-            message = str(self.mes_count) + "\tPlotting Bar-chart\n"
+            message = str(self.mes_count) + "\tPlotting Bar chart\n"
             self.text.insert(0.0, message)
             self.mes_count = self.mes_count + 1
             plot_bar(self.datastorage)
@@ -113,7 +123,7 @@ class Application(Frame):
 
     def execute_c(self):
         if self.checkdata():
-            message = str(self.mes_count) + "\tPlotting Pie-chart\n"
+            message = str(self.mes_count) + "\tPlotting Pie chart\n"
             self.text.insert(0.0, message)
             self.mes_count = self.mes_count + 1
             plot_pie(self.datastorage, hot_one=self.hopie.get())
@@ -125,7 +135,7 @@ class Application(Frame):
 
     def execute_d(self):
         if self.checkdata():
-            message = str(self.mes_count) + "\tPlotting World-map\n"
+            message = str(self.mes_count) + "\tPlotting World map\n"
             self.text.insert(0.0, message)
             self.mes_count = self.mes_count + 1
             plot_world(self.datastorage)
@@ -147,13 +157,14 @@ class Application(Frame):
         return new_data
 
     def select_ht(self):
+        self.datastorage = []
         hashtag = ["#" + self.input2.get()]
-        self.datastorage = open_json("twitterdata.json", hashtag)
+        self.datastorage = filter_hashtags(hashtag)
 
 
 root = Tk()
 root.title("Give the little animal a name")
-root.geometry("640x360")
+root.geometry("596x412")
 
 app = Application(root)
 

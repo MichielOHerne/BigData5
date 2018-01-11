@@ -1,3 +1,4 @@
+import os
 from sort_for_graphing import open_json, open_json_for_hashtag
 from importingtwitterdata_new import import_data, set_max_time, set_t0
 all_hashtags = []
@@ -27,3 +28,11 @@ def filter_hashtags(selected_hashtag):
     sent_tweets = []
     sent_tweets = open_json("twitterdata.json", selected_hashtag)
     return sent_tweets
+
+def create_dirs():
+    if not os.path.exists("Plots"):
+        os.makedirs("Plots")
+        print("Directory Plots created")
+    if not os.path.exists("dump"):
+        os.makedirs("dump")
+        print("Directory dump created")

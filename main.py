@@ -1,5 +1,5 @@
 from sort_for_graphing import open_json, open_json_for_hashtag
-from importingtwitterdata_new import import_data, set_max_time
+from importingtwitterdata_new import import_data, set_max_time, set_t0
 from plot_bar import plot_bar
 from plot_line import plot_line
 from plot_pie import plot_pie
@@ -15,6 +15,7 @@ def sort_hash(data, col):
 
 def import_time(time):
     max_time = set_max_time(time)
+    t0 = set_t0()
     data = import_data()
 
 

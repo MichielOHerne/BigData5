@@ -34,6 +34,7 @@ max_time = 0
 
 
 class Listener(StreamListener):
+    print(t0, max_time)
     def on_data(self, data):
         global t0
         all_data = json.loads(data)
@@ -104,9 +105,9 @@ def import_data():
     return
 
 
-def set_t0(set_time):
+def set_t0():
     global t0
-    t0 = set_time
+    t0 = time()
     return t0
 
 

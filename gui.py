@@ -94,6 +94,7 @@ class Application(Frame):
         self.text.insert(0.0, str(self.mes_count) + "\tData imported. Ready\n")
         self.mes_count = self.mes_count + 1
         self.sorted_all_hashtags = sort_hashtags("twitterdata.json")
+        self.input2.delete(0, END)
         self.input2.insert(0, str(self.sorted_all_hashtags[0][0]))
 
     def plot_popular(self):

@@ -26,13 +26,13 @@ class Application(Frame):
         self.input = Entry(self, width = 10)
         self.input.grid(row = 2, column = 1, sticky = W)
 
-        self.make_button = Button(self, text = "Collect data", command = self.collect_hts)
+        self.make_button = Button(self, text = "Collect data", command = self.collect_hts, width = 14)
         self.make_button.grid(row = 3, column = 1, sticky = W)
 
-        self.make_button = Button(self, text = "Plot popular tags", command = self.plot_popular)
+        self.make_button = Button(self, text = "Plot popular tags", command = self.plot_popular, width = 14)
         self.make_button.grid(row = 4, column = 1, sticky = W)
 
-        self.make_button = Button(self, text = "Print popular tags", command = self.print_popular)
+        self.make_button = Button(self, text = "Print popular tags", command = self.print_popular, width = 14)
         self.make_button.grid(row = 5, column = 1, sticky = W)
 
 
@@ -42,13 +42,13 @@ class Application(Frame):
         self.instruction.grid(row = 1, column = 3, columnspan = 1, sticky = W)
         self.input2 = Entry(self, width = 24)
         self.input2.grid(row = 2, column = 3, sticky = W)
-        self.make_button = Button(self, text = "Plot Line graph", command = self.execute_a)
+        self.make_button = Button(self, text = "Plot Line graph", command = self.execute_a, width = 12)
         self.make_button.grid(row = 3, column = 3, sticky = W)
-        self.make_button = Button(self, text = "Plot Bar chart", command = self.execute_b)
+        self.make_button = Button(self, text = "Plot Bar chart", command = self.execute_b, width = 12)
         self.make_button.grid(row = 4, column = 3, sticky = W)
-        self.make_button = Button(self, text = "Plot Pie chart", command = self.execute_c)
+        self.make_button = Button(self, text = "Plot Pie chart", command = self.execute_c, width = 12)
         self.make_button.grid(row = 5, column = 3, sticky = W)
-        self.make_button = Button(self, text = "Plot World map", command = self.execute_d)
+        self.make_button = Button(self, text = "Plot World map", command = self.execute_d, width = 12)
         self.make_button.grid(row = 6, column = 3, sticky = W)
 
         self.instruction = Label(self, text = " ===== DISPLAY OPTIONS ===== ")
@@ -106,6 +106,7 @@ class Application(Frame):
         message = str(self.mes_count) + "\tPrinting the five most common tags\n"
         for i in range(0, min(5, len(sorted_all_hashtags)-1)):
             message = message + ("\t(" + str(sorted_all_hashtags[i][1]) + ")\t" + sorted_all_hashtags[i][0] + "\n")
+        self.input2.insert(0, str(sorted_all_hashtags[0][1]))
         self.text.insert(0.0, message)
         self.mes_count = self.mes_count + 1
 

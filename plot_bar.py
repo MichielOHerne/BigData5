@@ -1,5 +1,6 @@
 import plotly as py
 import datetime
+import os
 
 def plot_bar(data_list):
     ''' Returns an interactive bar graph in the directory "Plots/"
@@ -30,4 +31,6 @@ def plot_bar(data_list):
 
     layout = dict(title='Data for <b>' + data_list[0] + '</b>', xaxis=dict(title='Time'), yaxis=dict(title='Sentiment'), barmode='relative')
     figure = dict(data=[neg, neu, pos], layout=layout)
+    if not os.path.exists("Plots"):
+        os.makedirs("Plots")
     py.offline.plot(figure, filename='Plots/sentiment-bar.html')

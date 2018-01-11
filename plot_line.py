@@ -1,6 +1,7 @@
 import plotly as py
 from plotly.graph_objs import *
 import datetime
+import os
 
 def plot_line(data_list, mai="hour"):
     ''' Returns an interactive line plot in the directory "Plots/"
@@ -53,4 +54,6 @@ def plot_line(data_list, mai="hour"):
     mov_avg = Scatter(x=x_moving_avg, y=y_moving_avg, text=['Moving average']*len(x_moving_avg), line=dict(shape='spline', color='rgb(24,192,24)'), name='Moving average (' + mai + ')', hoverinfo='y+text')
     layout = dict(title='Data for <b>' + data_list[0] + '</b>', xaxis=dict(title='Time'), yaxis=dict(title='Compound', range=[-1, 1]))
     figure = dict(data=Data([line, mov_avg, avg_ref]), layout=layout)
+    if not os.path.exists("Plots"):
+        os.makedirs("Plots")
     py.offline.plot(figure, filename='Plots/sentiment-line.html')

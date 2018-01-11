@@ -1,2 +1,3 @@
 # EWI3615TU
-Software design and application minor project
+Software Design and Application minor project
+Twitter Data Stream Sentiment Analysis

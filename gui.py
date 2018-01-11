@@ -105,7 +105,7 @@ class Application(Frame):
         sorted_all_hashtags = sort_hashtags("twitterdata.json")
         message = str(self.mes_count) + "\tPrinting the five most common tags\n"
         for i in range(0, min(5, len(sorted_all_hashtags)-1)):
-            message = message + ("\t" + sorted_all_hashtags[i][0] + "\t\t(" + str(sorted_all_hashtags[i][1]) + ")\n")
+            message = message + ("\t(" + str(sorted_all_hashtags[i][1]) + ")\t" + sorted_all_hashtags[i][0] + "\n")
         self.text.insert(0.0, message)
         self.mes_count = self.mes_count + 1
 
@@ -173,7 +173,6 @@ class Application(Frame):
         self.datastorage = []
         hashtag = ["#" + self.input2.get()]
         self.datastorage = filter_hashtags(hashtag)
-
 
 root = Tk()
 root.title("Give the little animal a name")

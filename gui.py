@@ -151,7 +151,7 @@ class Application(Frame):
             message = str(self.mes_count) + "\tPlotting World map\n"
             self.text.insert(0.0, message)
             self.mes_count = self.mes_count + 1
-            plot_world(self.datastorage)
+            plot_world(self.datastorage, "country names")
             self.text.insert(0.0, str(self.mes_count) + "\tDone. Ready\n")
             self.mes_count = self.mes_count + 1
         else:

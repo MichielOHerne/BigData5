@@ -1,11 +1,4 @@
-from time import time, sleep
 from re import findall
-from operations import clear_dump
-from nltk import sentiment
-from nltk.sentiment.vader import SentimentIntensityAnalyzer
-import shutil
-import os
-
 
 def count_hashtags(tweet, hashtag_total):
     for z in range(len(tweet)):

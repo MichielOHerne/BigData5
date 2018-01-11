@@ -30,7 +30,7 @@ def plot_bar(data_list):
             neg_bar[index] = neg_bar[index] + data_list[i][1][1]
             neu_bar[index] = neu_bar[index] + data_list[i][1][2]
             pos_bar[index] = pos_bar[index] + data_list[i][1][3]
-            messages[index] = messages[index] + "\n" + data_list[i][0]
+            messages[index] = messages[index] + " + [...]"
 
     for i in range(len(neg_bar)):
         total = neg_bar[i] + neu_bar[i] + pos_bar[i]

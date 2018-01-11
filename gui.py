@@ -93,20 +93,19 @@ class Application(Frame):
         data = import_time(time)
         self.text.insert(0.0, str(self.mes_count) + "\tData imported. Ready\n")
         self.mes_count = self.mes_count + 1
+        self.sorted_all_hashtags = sort_hashtags("twitterdata.json")
+        self.input2.insert(0, str(self.sorted_all_hashtags[0][0]))
 
     def plot_popular(self):
         message = str(self.mes_count) + "\tPlotting overview of most common tags\n"
         self.text.insert(0.0, message)
         self.mes_count = self.mes_count + 1
-        sorted_all_hashtags = sort_hashtags("twitterdata.json")
-        plot_hbar(sorted_all_hashtags[0:16])
+        plot_hbar(self.sorted_all_hashtags[0:16])
 
     def print_popular(self):
-        sorted_all_hashtags = sort_hashtags("twitterdata.json")
         message = str(self.mes_count) + "\tPrinting the five most common tags\n"
-        for i in range(0, min(5, len(sorted_all_hashtags)-1)):
-            message = message + ("\t(" + str(sorted_all_hashtags[i][1]) + ")\t" + sorted_all_hashtags[i][0] + "\n")
-        self.input2.insert(0, str(sorted_all_hashtags[0][1]))
+        for i in range(0, min(5, len(self.sorted_all_hashtags)-1)):
+            message = message + ("\t(" + str(self.sorted_all_hashtags[i][1]) + ")\t" + self.sorted_all_hashtags[i][0] + "\n")
         self.text.insert(0.0, message)
         self.mes_count = self.mes_count + 1
 
@@ -175,6 +174,7 @@ class Application(Frame):
         hashtag = ["#" + self.input2.get()]
         self.datastorage = filter_hashtags(hashtag)
 
+create_dirs()
 root = Tk()
 root.title("Give the little animal a name")
 root.geometry("616x412")

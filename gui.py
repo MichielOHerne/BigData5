@@ -9,73 +9,69 @@ from main import *
 class Application(Frame):
     def __init__(self, master):
         Frame.__init__(self, master)
+        self.mes_count = 0
+        self.datastorage = list()
+        self.sorted_all_hashtags = list()
         self.grid()
         self.create_widgets()
 
     def create_widgets(self):
-        self.mes_count = 0
-        self.datastorage = list()
+        self.instruction = Label(self, text=" ")  # Space
+        self.instruction.grid(row=0, column=0, columnspan=1, sticky=W)
 
-        self.instruction = Label(self, text = " ") # Space
-        self.instruction.grid(row = 0, column = 0, columnspan = 1, sticky = W)
+        self.instruction = Label(self, text=" ===== COLLECTING DATA =====    ")
+        self.instruction.grid(row=0, column=1, columnspan=1, sticky=W)
+        self.instruction = Label(self, text="Seconds to stream: ")
+        self.instruction.grid(row=1, column=1, columnspan=1, sticky=W)
+        self.input = Entry(self, width=10)
+        self.input.grid(row=2, column=1, sticky=W)
 
-        self.instruction = Label(self, text = " ===== COLLECTING DATA =====    ")
-        self.instruction.grid(row = 0, column = 1, columnspan = 1, sticky = W)
-        self.instruction = Label(self, text = "Seconds to stream: ")
-        self.instruction.grid(row = 1, column = 1, columnspan = 1, sticky = W)
-        self.input = Entry(self, width = 10)
-        self.input.grid(row = 2, column = 1, sticky = W)
+        self.make_button = Button(self, text="Collect data", command=self.collect_hts, width=14)
+        self.make_button.grid(row=3, column=1, sticky=W)
 
-        self.make_button = Button(self, text = "Collect data", command = self.collect_hts, width = 14)
-        self.make_button.grid(row = 3, column = 1, sticky = W)
+        self.make_button = Button(self, text="Plot popular tags", command=self.plot_popular, width=14)
+        self.make_button.grid(row=4, column=1, sticky=W)
 
-        self.make_button = Button(self, text = "Plot popular tags", command = self.plot_popular, width = 14)
-        self.make_button.grid(row = 4, column = 1, sticky = W)
+        self.make_button = Button(self, text="Print popular tags", command=self.print_popular, width=14)
+        self.make_button.grid(row=5, column=1, sticky=W)
 
-        self.make_button = Button(self, text = "Print popular tags", command = self.print_popular, width = 14)
-        self.make_button.grid(row = 5, column = 1, sticky = W)
+        self.instruction = Label(self, text=" ===== DISPLAY DATA =====   ")
+        self.instruction.grid(row=0, column=3, sticky=W)
+        self.instruction = Label(self, text="Enter hashtag to display: ")
+        self.instruction.grid(row=1, column=3, columnspan=1, sticky=W)
+        self.input2 = Entry(self, width=24)
+        self.input2.grid(row=2, column=3, sticky=W)
+        self.make_button = Button(self, text="Plot Line graph", command=self.execute_a, width=12)
+        self.make_button.grid(row=3, column=3, sticky=W)
+        self.make_button = Button(self, text="Plot Bar chart", command=self.execute_b, width=12)
+        self.make_button.grid(row=4, column=3, sticky=W)
+        self.make_button = Button(self, text="Plot Pie chart", command=self.execute_c, width=12)
+        self.make_button.grid(row=5, column=3, sticky=W)
+        self.make_button = Button(self, text="Plot World map", command=self.execute_d, width=12)
+        self.make_button.grid(row=6, column=3, sticky=W)
 
-
-        self.instruction = Label(self, text = " ===== DISPLAY DATA =====   ")
-        self.instruction.grid(row = 0, column = 3, sticky = W)
-        self.instruction = Label(self, text = "Enter hashtag to display: ")
-        self.instruction.grid(row = 1, column = 3, columnspan = 1, sticky = W)
-        self.input2 = Entry(self, width = 24)
-        self.input2.grid(row = 2, column = 3, sticky = W)
-        self.make_button = Button(self, text = "Plot Line graph", command = self.execute_a, width = 12)
-        self.make_button.grid(row = 3, column = 3, sticky = W)
-        self.make_button = Button(self, text = "Plot Bar chart", command = self.execute_b, width = 12)
-        self.make_button.grid(row = 4, column = 3, sticky = W)
-        self.make_button = Button(self, text = "Plot Pie chart", command = self.execute_c, width = 12)
-        self.make_button.grid(row = 5, column = 3, sticky = W)
-        self.make_button = Button(self, text = "Plot World map", command = self.execute_d, width = 12)
-        self.make_button.grid(row = 6, column = 3, sticky = W)
-
-        self.instruction = Label(self, text = " ===== DISPLAY OPTIONS ===== ")
-        self.instruction.grid(row = 0, column = 2, sticky = W)
+        self.instruction = Label(self, text=" ===== DISPLAY OPTIONS ===== ")
+        self.instruction.grid(row=0, column=2, sticky=W)
         self.hopie = StringVar()
         self.hopie.set("norm")
         self.mal = StringVar()
         self.mal.set("hour")
-        self.add_settings = Label(self, text = "Line graph moving average:")
-        self.add_settings.grid(row = 1, column = 2, sticky = W)
-        Radiobutton(self, text = "Minute", value = "minute", variable = self.mal).grid(row = 2, column = 2, sticky = W)
-        Radiobutton(self, text = "Hour", value = "hour", variable = self.mal).grid(row = 3, column = 2, sticky = W)
-        self.add_settings = Label(self, text = "Pie chart mode:")
-        self.add_settings.grid(row = 4, column = 2, sticky = W)
-        Radiobutton(self, text = "Normal", value = "norm", variable = self.hopie).grid(row = 5, column = 2, sticky = W)
-        Radiobutton(self, text = "Hot one", value = "ho", variable = self.hopie).grid(row = 6, column = 2, sticky = W)
-        Radiobutton(self, text = "Hot one (ignore neutral)", value = "hoin", variable = self.hopie).grid(row = 7, column = 2, sticky = W)
+        self.add_settings = Label(self, text="Line graph moving average:")
+        self.add_settings.grid(row=1, column=2, sticky=W)
+        Radiobutton(self, text="Minute", value="minute", variable=self.mal).grid(row=2, column=2, sticky=W)
+        Radiobutton(self, text="Hour", value="hour", variable=self.mal).grid(row=3, column=2, sticky=W)
+        self.add_settings = Label(self, text="Pie chart mode:")
+        self.add_settings.grid(row=4, column=2, sticky=W)
+        Radiobutton(self, text="Normal", value="norm", variable=self.hopie).grid(row=5, column=2, sticky=W)
+        Radiobutton(self, text="Hot one", value="ho", variable=self.hopie).grid(row=6, column=2, sticky=W)
+        Radiobutton(self, text="Hot one (ignore neutral)", value="hoin", variable=self.hopie).grid(row=7, column=2, sticky=W)
 
-        self.instruction = Label(self, text = " ========   STATUS   ======== ")
-        self.instruction.grid(row = 9, column = 1, columnspan = 4, sticky = W)
-
-        self.text = Text(self, width = 74, height = 12, wrap = WORD)
-        self.text.grid(row = 10, column = 1, columnspan = 5, sticky = W)
-
-        self.instruction = Label(self, text = "\t\t\t        Tim Al, Michiel O'Herne, Casper Spronk")
-        self.instruction.grid(row = 11, column = 2, columnspan = 2, sticky = W)
-
+        self.instruction = Label(self, text=" ========   STATUS   ======== ")
+        self.instruction.grid(row=9, column=1, columnspan=4, sticky=W)
+        self.text = Text(self, width=74, height=12, wrap=WORD)
+        self.text.grid(row=10, column=1, columnspan=5, sticky=W)
+        self.instruction = Label(self, text="\t\t\t        Tim Al, Michiel O'Herne, Casper Spronk")
+        self.instruction.grid(row=11, column=2, columnspan=2, sticky=W)
 
         self.text.insert(0.0, str(self.mes_count) + "\tReady\n\tCollect first the data")
         self.mes_count = self.mes_count + 1
@@ -83,19 +79,28 @@ class Application(Frame):
     def collect_hts(self):
         try:
             time = int(self.input.get())
-        except ValueError:
-            time = 0
-            self.text.insert(0.0, str(self.mes_count) + "\tPlease enter a integer value\n")
+            if time < 0:
+                raise ValueError
+            message = str(self.mes_count) + "\tCollecting data (" + str(time) + "s)\n"
+            self.text.insert(0.0, message)
             self.mes_count = self.mes_count + 1
-        message = str(self.mes_count) + "\tCollecting data (" + str(time) + "s)\n"
-        self.text.insert(0.0, message)
-        self.mes_count = self.mes_count + 1
-        data = import_time(time)
-        self.text.insert(0.0, str(self.mes_count) + "\tData imported. Ready\n")
-        self.mes_count = self.mes_count + 1
-        self.sorted_all_hashtags = sort_hashtags("twitterdata.json")
-        self.input2.delete(0, END)
-        self.input2.insert(0, str(self.sorted_all_hashtags[0][0]))
+            data = import_time(time)
+            self.text.insert(0.0, str(self.mes_count) + "\tData imported. Ready\n")
+            self.mes_count = self.mes_count + 1
+            self.sorted_all_hashtags = sort_hashtags("twitterdata.json")
+            if len(self.sorted_all_hashtags) == 0:
+                self.text.insert(0.0, str(self.mes_count) + "\tNothing received. Please try again\n")
+            else:
+                counter = 0
+                for item in self.sorted_all_hashtags:
+                    counter = counter + len(item[1])
+                self.text.insert(0.0, str(self.mes_count) + "\tReceived " + str(counter) + " messages\n")
+            self.mes_count = self.mes_count + 1
+            self.input2.delete(0, END)
+            self.input2.insert(0, str(self.sorted_all_hashtags[0][0]))
+        except ValueError:
+            self.text.insert(0.0, str(self.mes_count) + "\tPlease enter a positive integer\n")
+            self.mes_count = self.mes_count + 1
 
     def plot_popular(self):
         message = str(self.mes_count) + "\tPlotting overview of most common tags\n"

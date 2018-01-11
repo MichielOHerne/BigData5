@@ -10,7 +10,7 @@ def sort_into_list(tweet, hashtag_total, time_tweet, country):
     for z in range(len(tweet)):
         tweet_sent = []
         my_regex = r"" + hashtag_total[0]
-        tag = findall(my_regex, tweet[z])  # select hashtag to filter on
+        tag = findall(my_regex, tweet[z])
         try:
             if tag[0] == hashtag_total[0]:
                 tweet_sent.append(tweet[z])

@@ -18,12 +18,26 @@ def plot_bar(data_list):
     neg_bar, neu_bar, pos_bar = [], [], []
     messages = []
     for i in range(1, len(data_list)):
-        x_axis.append(datetime.datetime.fromtimestamp(data_list[i][2]).strftime('%Y-%m-%d %H:%M:%S'))  # Timestamp
-        normalize = max(1, data_list[i][1][1] + data_list[i][1][2] + data_list[i][1][3])
-        neg_bar.append(data_list[i][1][1]/normalize)  # Negative
-        neu_bar.append(data_list[i][1][2]/normalize)  # Neutral
-        pos_bar.append(data_list[i][1][3]/normalize)  # Positive
-        messages.append(data_list[i][0])    # Message
+        the_moment = datetime.datetime.fromtimestamp(data_list[i][2]).strftime('%Y-%m-%d %H:%M:%S')
+        if the_moment not in x_axis:
+            x_axis.append(the_moment)  # Timestamp
+            neg_bar.append(data_list[i][1][1])  # Negative
+            neu_bar.append(data_list[i][1][2])  # Neutral
+            pos_bar.append(data_list[i][1][3])  # Positive
+            messages.append(data_list[i][0])    # Message
+        else:
+            index = len(neg_bar)-1
+            neg_bar[index] = neg_bar[index] + data_list[i][1][1]
+            neu_bar[index] = neu_bar[index] + data_list[i][1][2]
+            pos_bar[index] = pos_bar[index] + data_list[i][1][3]
+            messages[index] = messages[index] + "\n" + data_list[i][0]
+
+    for i in range(len(neg_bar)):
+        total = neg_bar[i] + neu_bar[i] + pos_bar[i]
+        if total > 1:
+            neg_bar[i] = neg_bar[i] / total
+            neu_bar[i] = neu_bar[i] / total
+            pos_bar[i] = pos_bar[i] / total
 
     neg = {'x': x_axis, 'y': neg_bar, 'name': 'Negative', 'type': 'bar', 'marker': dict(color=colors[0])}
     neu = {'x': x_axis, 'y': neu_bar, 'name': 'Neutral', 'type': 'bar', 'marker': dict(color=colors[1])}

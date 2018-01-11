@@ -5,7 +5,8 @@ Software Design and Application minor project
 
 By:
 
-Tim Al \n
+Tim Al 
+
 Casper Spronk
 
 Michiel O'Herne

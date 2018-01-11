@@ -32,15 +32,20 @@ def plot_pie(data_list, mode="norm"):
             scores[1] = scores[1] + data_list[i][1][2]  # Neutral
             scores[2] = scores[2] + data_list[i][1][3]  # Positive
     elif mode=="hoin":
+        colors = ['rgb(149,28,28)', 'rgb(128,192,50)']
+        scores.pop()
         for i in range(1, len(data_list)):
             if data_list[i][1][1] > data_list[i][1][3]:
                 scores[0] = scores[0] + 1
             else:
-                scores[2] = scores[2] + 1
+                scores[1] = scores[1] + 1
     else:
         print("Unknown mode")
     for i in range(len(scores)):
         scores[i] = round(scores[i]/length, 4)
 
-    data = Pie(labels=['Negative','Neutral','Positive'], values=scores, hoverinfo='label+percent', textinfo='percent', textfont=dict(size=20, color='rgb(24,24,24)'), marker=dict(colors=colors, line=dict(color='#000000', width=2)))
+    if mode=="hoin":
+        data = Pie(labels=['Negative','Positive'], values=scores, hoverinfo='label+percent', textinfo='percent', textfont=dict(size=20, color='rgb(24,24,24)'), marker=dict(colors=colors, line=dict(color='#000000', width=2)))
+    else:
+        data = Pie(labels=['Negative','Neutral','Positive'], values=scores, hoverinfo='label+percent', textinfo='percent', textfont=dict(size=20, color='rgb(24,24,24)'), marker=dict(colors=colors, line=dict(color='#000000', width=2)))
     py.offline.plot(dict(data=[data], layout=dict(title=name)), filename='Plots/sentiment-pie.html')

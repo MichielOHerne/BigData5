@@ -139,7 +139,7 @@ class Application(Frame):
             message = str(self.mes_count) + "\tPlotting Pie chart\n"
             self.text.insert(0.0, message)
             self.mes_count = self.mes_count + 1
-            plot_pie(self.datastorage, hot_one=self.hopie.get())
+            plot_pie(self.datastorage, mode=self.hopie.get())
             self.text.insert(0.0, str(self.mes_count) + "\tDone. Ready\n")
             self.mes_count = self.mes_count + 1
         else:

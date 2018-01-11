@@ -1,7 +1,6 @@
 import plotly as py
 from plotly.graph_objs import *
 import datetime
-import os
 
 def plot_pie(data_list, hot_one=False):
     ''' Returns an interactive line plot in the directory "Plots/"
@@ -36,6 +35,4 @@ def plot_pie(data_list, hot_one=False):
         scores[i] = round(scores[i]/length, 4)
 
     data = Pie(labels=['Negative','Neutral','Positive'], values=scores, hoverinfo='label+percent', textinfo='percent', textfont=dict(size=20, color='rgb(24,24,24)'), marker=dict(colors=colors, line=dict(color='#000000', width=2)))
-    if not os.path.exists("Plots"):
-        os.makedirs("Plots")
     py.offline.plot(dict(data=[data], layout=dict(title=name)), filename='Plots/sentiment-pie.html')

@@ -1,6 +1,5 @@
 import plotly as py
 from plotly.graph_objs import *
-import os
 
 def plot_hbar(data_list):
     ''' Returns an interactive horizontal bar graph in the directory "Plots/"
@@ -16,6 +15,4 @@ def plot_hbar(data_list):
     data = [Bar(x=occurances, y=tags, orientation='h', marker=dict(color='rgb(192,248,248)'))]
     layout = dict(title='Collected hashtags', xaxis=dict(title='Occurance'))
     figure = dict(data=data, layout=layout)
-    if not os.path.exists("Plots"):
-        os.makedirs("Plots")
     py.offline.plot(figure, filename='Plots/overview-bar.html')

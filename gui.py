@@ -4,8 +4,6 @@ from plot_bar import *
 from plot_world import *
 from plot_pie import *
 from plot_overview import *
-from sort_for_graphing import open_json, open_json_for_hashtag
-from importingtwitterdata_new import import_data, set_max_time
 from main import *
 
 class Application(Frame):

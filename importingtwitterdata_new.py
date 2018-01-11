@@ -2,7 +2,6 @@ from tweepy import Stream
 from tweepy import OAuthHandler
 from tweepy.streaming import StreamListener
 from operations import clean_str
-from sorting import sorting
 from operations import clear_dump
 import json
 from time import time
@@ -103,6 +102,12 @@ def import_data():
     except:
         pass
     return
+
+
+def set_t0(set_time):
+    global t0
+    t0 = set_time
+    return t0
 
 
 def set_max_time(set_time):

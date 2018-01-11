@@ -17,6 +17,9 @@ def plot_line(data_list, mai="hour"):
         tsss = '%Y-%m-%d %H:30'
     elif mai == "minute":
         tsss = '%Y-%m-%d %H:%M:30'
+    else:
+        print("Unknown mai-value")
+        tsss = '%Y-%m-%d %H:30'
     x_axis = []
     y_axis = []
     x_moving_avg = []

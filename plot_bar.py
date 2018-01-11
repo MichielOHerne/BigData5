@@ -19,9 +19,10 @@ def plot_bar(data_list):
     messages = []
     for i in range(1, len(data_list)):
         x_axis.append(datetime.datetime.fromtimestamp(data_list[i][2]).strftime('%Y-%m-%d %H:%M:%S'))  # Timestamp
-        neg_bar.append(data_list[i][1][1])  # Negative
-        neu_bar.append(data_list[i][1][2])  # Neutral
-        pos_bar.append(data_list[i][1][3])  # Positive
+        normalize = max(1, data_list[i][1][1] + data_list[i][1][2] + data_list[i][1][3])
+        neg_bar.append(data_list[i][1][1]/normalize)  # Negative
+        neu_bar.append(data_list[i][1][2]/normalize)  # Neutral
+        pos_bar.append(data_list[i][1][3]/normalize)  # Positive
         messages.append(data_list[i][0])    # Message
 
     neg = {'x': x_axis, 'y': neg_bar, 'name': 'Negative', 'type': 'bar', 'marker': dict(color=colors[0])}

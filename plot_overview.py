@@ -16,4 +16,3 @@ def plot_hbar(data_list):
     layout = dict(title='Collected hashtags', xaxis=dict(title='Occurance'))
     figure = dict(data=data, layout=layout)
     py.offline.plot(figure, filename='Plots/overview-bar.html')
-

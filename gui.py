@@ -93,7 +93,7 @@ class Application(Frame):
             else:
                 counter = 0
                 for item in self.sorted_all_hashtags:
-                    counter = counter + len(item[1])
+                    counter = counter + len(item[0])
                 self.text.insert(0.0, str(self.mes_count) + "\tReceived " + str(counter) + " messages\n")
             self.mes_count = self.mes_count + 1
             self.input2.delete(0, END)
@@ -101,6 +101,7 @@ class Application(Frame):
         except ValueError:
             self.text.insert(0.0, str(self.mes_count) + "\tPlease enter a positive integer\n")
             self.mes_count = self.mes_count + 1
+            self.input.delete(0, END)
 
     def plot_popular(self):
         message = str(self.mes_count) + "\tPlotting overview of most common tags\n"
@@ -183,7 +184,7 @@ class Application(Frame):
 create_dirs()
 root = Tk()
 root.title("Give the little animal a name")
-root.geometry("616x432")
+root.geometry("616x412")
 
 app = Application(root)
 

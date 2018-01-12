@@ -13,6 +13,6 @@ def plot_hbar(data_list):
         occurances.insert(0, item[1])
 
     data = [Bar(x=occurances, y=tags, orientation='h', marker=dict(color='rgb(192,248,248)'))]
-    layout = dict(title='Collected hashtags', xaxis=dict(title='Occurance'))
+    layout = dict(title='Collected hashtags', xaxis=dict(title='Occurance'), margin=dict(l=192))
     figure = dict(data=data, layout=layout)
     py.offline.plot(figure, filename='Plots/overview-bar.html')

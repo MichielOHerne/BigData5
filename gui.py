@@ -183,7 +183,7 @@ class Application(Frame):
 create_dirs()
 root = Tk()
 root.title("Give the little animal a name")
-root.geometry("616x412")
+root.geometry("616x432")
 
 app = Application(root)
 

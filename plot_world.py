@@ -1,6 +1,5 @@
 import plotly as py
 import datetime
-import os
 
 def plot_world(data_list, loc_mode="ISO-3"):
     ''' Returns an interactive world map with the data in the directory "Plots/"
@@ -50,6 +49,4 @@ def plot_world(data_list, loc_mode="ISO-3"):
     # Plot
     layout = dict(title=name, geo=dict(showframe=False, showland=True, landcolor="rgb(192, 192, 192)", showcoastlines=True, projection=dict(type='Mercator')), updatemenus=choose_data)
     fig = dict(data=data, layout=layout)
-    if not os.path.exists("Plots"):
-        os.makedirs("Plots")
     py.offline.plot(fig, validate=False, filename='Plots/sentiment-world.html')

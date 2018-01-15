@@ -122,7 +122,6 @@ class Application(Frame):
             self.text.insert(0.0, message)
             self.mes_count = self.mes_count + 1
             plot_line(self.datastorage, mai=self.mal.get())
-            print(self.mal)
             self.text.insert(0.0, str(self.mes_count) + "\tDone. Ready\n")
             self.mes_count = self.mes_count + 1
         else:

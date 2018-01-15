@@ -54,17 +54,15 @@ class Application(Frame):
         self.instruction.grid(row=0, column=2, sticky=W)
         self.hopie = StringVar()
         self.hopie.set("norm")
-        self.mal = StringVar()
-        self.mal.set("hour")
         self.add_settings = Label(self, text="Line graph moving average:")
         self.add_settings.grid(row=1, column=2, sticky=W)
-        Radiobutton(self, text="Minute", value="minute", variable=self.mal).grid(row=2, column=2, sticky=W)
-        Radiobutton(self, text="Hour", value="hour", variable=self.mal).grid(row=3, column=2, sticky=W)
+        self.input3 = Entry(self, width=10)
+        self.input3.grid(row=2, column=2, sticky=W)
         self.add_settings = Label(self, text="Pie chart mode:")
-        self.add_settings.grid(row=4, column=2, sticky=W)
-        Radiobutton(self, text="Normal", value="norm", variable=self.hopie).grid(row=5, column=2, sticky=W)
-        Radiobutton(self, text="Hot one", value="ho", variable=self.hopie).grid(row=6, column=2, sticky=W)
-        Radiobutton(self, text="Hot one (ignore neutral)", value="hoin", variable=self.hopie).grid(row=7, column=2, sticky=W)
+        self.add_settings.grid(row=3, column=2, sticky=W)
+        Radiobutton(self, text="Normal", value="norm", variable=self.hopie).grid(row=4, column=2, sticky=W)
+        Radiobutton(self, text="Hot one", value="ho", variable=self.hopie).grid(row=5, column=2, sticky=W)
+        Radiobutton(self, text="Hot one (ignore neutral)", value="hoin", variable=self.hopie).grid(row=6, column=2, sticky=W)
 
         self.instruction = Label(self, text=" ========   STATUS   ======== ")
         self.instruction.grid(row=9, column=1, columnspan=4, sticky=W)
@@ -75,6 +73,7 @@ class Application(Frame):
 
         self.text.insert(0.0, str(self.mes_count) + "\tReady\n\tCollect first the data")
         self.mes_count = self.mes_count + 1
+        self.input3.insert(0, "5")
 
     def collect_hts(self):
         try:
@@ -121,9 +120,14 @@ class Application(Frame):
             message = str(self.mes_count) + "\tPlotting Line graph\n"
             self.text.insert(0.0, message)
             self.mes_count = self.mes_count + 1
-            plot_line(self.datastorage, mai=self.mal.get())
-            print(self.mal)
-            self.text.insert(0.0, str(self.mes_count) + "\tDone. Ready\n")
+            try:
+                manomval = int(self.input3.get())
+                if manomval < 2:
+                    raise ValueError
+                plot_line(self.datastorage, manom=manomval)
+                self.text.insert(0.0, str(self.mes_count) + "\tDone. Ready\n")
+            except ValueError:
+                self.text.insert(0.0, str(self.mes_count) + "\tEnter a integer larger than one. Failed\n")
             self.mes_count = self.mes_count + 1
         else:
             self.text.insert(0.0, str(self.mes_count) + "\tNo data available. Failed\n")
